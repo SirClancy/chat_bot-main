@@ -11,7 +11,7 @@ db_config = {
     }
 
 
-def get_order_status(order_id: int):
+def get_order_status(order_id):
     # Replace these values with your MySQL database connection details
 
 
@@ -22,17 +22,17 @@ def get_order_status(order_id: int):
         cursor = connection.cursor()
 
         # Query to retrieve the status for a given order_id
-        query = f"SELECT status FROM order_tracking WHERE order_id = %s"
+        query = f"SELECT status FROM order_tracking WHERE order_id = {order_id}"
 
 
         # Execute the query
-        cursor.execute(query, (order_id))
+        cursor.execute(query)
+
 
         # Fetch the result
         result = cursor.fetchone()
 
         cursor.close()
-        connection.close()
 
         if result is not None:            
                 return result[0]
@@ -48,5 +48,5 @@ def get_order_status(order_id: int):
 
 
 # # Replace 'your_order_id' with the actual order_id you want to query
-# order_id_to_query = [41]
-# get_order_status(order_id_to_query)
+# order_id_to_query = 41
+# print (get_order_status(order_id_to_query))
