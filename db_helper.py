@@ -11,11 +11,10 @@ db_config = {
     }
 
 
-def get_order_status(order_id):
+def get_order_status(order_id: int):
     # Replace these values with your MySQL database connection details
-  
 
-    try:
+
         # Connect to the MySQL database
         connection = mysql.connector.connect(**db_config)
 
@@ -23,32 +22,31 @@ def get_order_status(order_id):
         cursor = connection.cursor()
 
         # Query to retrieve the status for a given order_id
-        query = f"SELECT status FROM order_tracking WHERE order_id = {order_id};"
+        query = f"SELECT status FROM order_tracking WHERE order_id = %s"
+
 
         # Execute the query
-        cursor.execute(query)
+        cursor.execute(query, (order_id))
 
         # Fetch the result
         result = cursor.fetchone()
 
-        if result:
-            # Extract the status from the result
-            status = result[0]
-            print(f"Status for Order ID {order_id}: {status}")
+        cursor.close()
+        connection.close()
+
+        if result is not None:            
+                return result[0]
         else:
-            print(f"No status found for Order ID {order_id}")
+                return None
 
-    except mysql.connector.Error as e:
-        print(f"Error: {e}")
-
-    finally:
-        # Close the cursor and connection
-        if 'cursor' in locals() and cursor is not None:
-            cursor.close()
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
+#         if result:
+#             # Extract the status from the result
+#             status = result[0]
+#             print(f"Status for Order ID {order_id}: {status}")
+#         else:
+#             print(f"No status found for Order ID {order_id}")
 
 
 # # Replace 'your_order_id' with the actual order_id you want to query
-# order_id_to_query = 'your_order_id'
+# order_id_to_query = [41]
 # get_order_status(order_id_to_query)
