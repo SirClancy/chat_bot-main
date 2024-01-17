@@ -19,7 +19,8 @@ async def handle_request(request: Request):  # Change the parameter type to Requ
       
     
 def track_order(parameters: dict):
-  order_status = order_id = parameters['order_id']
+  order_id = parameters['order_id']
+  order_status = db_helper.get_order_status[order_id]
   
   if order_status:
      fulfillmentText = f"The order status for order id : {order_id} is : {order_status}"

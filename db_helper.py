@@ -5,9 +5,11 @@ global db_config
 db_config = {
         'host': 'localhost',
         'user': 'root',
-        'password': 'Twcp#4@6217vx',
+        'password': 'Twcp#4@6286vx',
         'database': 'pandeyji_eatery',
+        'port': '3306'
     }
+
 
 def get_order_status(order_id):
     # Replace these values with your MySQL database connection details
@@ -46,6 +48,7 @@ def get_order_status(order_id):
         if 'connection' in locals() and connection.is_connected():
             connection.close()
 
-# Replace 'your_order_id' with the actual order_id you want to query
-order_id_to_query = 'your_order_id'
-get_order_status(order_id_to_query)
+
+# # Replace 'your_order_id' with the actual order_id you want to query
+# order_id_to_query = 'your_order_id'
+# get_order_status(order_id_to_query)
