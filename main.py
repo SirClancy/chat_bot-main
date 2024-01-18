@@ -7,6 +7,8 @@ import generic_helper
 
 app = FastAPI()
 
+inprogress_orders = {}
+
 @app.post("/")
 async def handle_request(request: Request):
 		# Change the parameter type to Request
@@ -33,18 +35,18 @@ def add_to_order(parameters: dict, session_id: str):
     if len(food_items) != len(quantities):
         fulfillment_text = "Sorry I didn't understand. Can you please specify food items and quantities clearly?"
     else:
-          new_food_dict = dict(zip(food_items, quantities))
-	  
-          fulfillment_text = f"Received {food_items} and {quantities} in the backend"
-    #     if session_id in inprogress_orders:
-    #         current_food_dict = inprogress_orders[session_id]
-    #         current_food_dict.update(new_food_dict)
-    #         inprogress_orders[session_id] = current_food_dict
-    #     else:
-    #         inprogress_orders[session_id] = new_food_dict
+        new_food_dict = dict(zip(food_items, quantities))
 
-    #     order_str = generic_helper.get_str_from_food_dict(inprogress_orders[session_id])
-    #     fulfillment_text = f"So far you have: {order_str}. Do you need anything else?"
+        if session_id in inprogress_orders:
+            current_food_dict = inprogress_orders[session_id]
+            current_food_dict.update(new_food_dict)
+            inprogress_orders[session_id] = current_food_dict
+        else:
+            inprogress_orders[session_id] = new_food_dict
+
+
+        order_str = generic_helper.get_str_from_food_dict(inprogress_orders[session_id])
+        fulfillment_text = f"So far you have: {order_str}. Do you need anything else?"
 
     return JSONResponse(content={
         "fulfillmentText": fulfillment_text
